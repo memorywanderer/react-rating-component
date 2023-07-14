@@ -1,5 +1,3 @@
-import { KeyboardEvent } from "react";
-
 type StarProps = {
   rating: number,
   maxValue: number,
@@ -27,42 +25,21 @@ export const Star = ({
 }: StarProps) => {
 
   // Star styles for customization
-  const starStyles = {
-    display: "none"
-  } as React.CSSProperties
-
   const starCheckedAndSvg = {
     fill: ratingValue <= rating || ratingValue <= hoverRating ? checkedColor : unCheckedColor,
     cursor: 'pointer',
   } as React.CSSProperties;
 
-  const handleCheckboxCheck = () => {
-    setRating(ratingValue);
-  }
-
-  const handleMouseEnterStar = () => {
-    setHoverRating(ratingValue)
-  }
-
-  const handleMouseLeaveStar = () => {
-    setHoverRating(rating)
-  }
-
-  const handleOnKeyDown = (e: KeyboardEvent<SVGSVGElement>) => {
-    if (e.key === 'Enter') {
-      setRating(ratingValue);
-      setHoverRating(ratingValue)
-    }
-  }
-
   return (
     <label htmlFor={`star-${ratingValue}`}>
       <input
-        style={starStyles}
+        style={{ display: "none" }}
         type="checkbox"
         id={`star-${ratingValue}`}
         value={ratingValue}
-        onChange={handleCheckboxCheck}
+        onChange={() => {
+          setRating(ratingValue);
+        }}
         checked={ratingValue <= rating ? true : false}
 
       />
@@ -73,9 +50,13 @@ export const Star = ({
         height={height}
         fill="currentColor"
         viewBox="0 0 16 16"
-        onMouseEnter={handleMouseEnterStar}
-        onMouseLeave={handleMouseLeaveStar}
-        onKeyDown={handleOnKeyDown}
+        onMouseEnter={() => setHoverRating(ratingValue)}
+        onMouseLeave={() => setHoverRating(rating)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            setRating(ratingValue);
+          }
+        }}
         tabIndex={0}
         role="checkbox"
         aria-label={`Rate ${ratingValue} of ${maxValue} stars`}
