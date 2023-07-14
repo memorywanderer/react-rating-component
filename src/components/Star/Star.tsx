@@ -1,3 +1,5 @@
+import { KeyboardEvent } from "react";
+
 type StarProps = {
   rating: number,
   maxValue: number,
@@ -46,6 +48,13 @@ export const Star = ({
     setHoverRating(rating)
   }
 
+  const handleOnKeyDown = (e: KeyboardEvent<SVGSVGElement>) => {
+    if (e.key === 'Enter') {
+      setRating(ratingValue);
+      setHoverRating(ratingValue)
+    }
+  }
+
   return (
     <label htmlFor={`star-${ratingValue}`}>
       <input
@@ -66,11 +75,7 @@ export const Star = ({
         viewBox="0 0 16 16"
         onMouseEnter={handleMouseEnterStar}
         onMouseLeave={handleMouseLeaveStar}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            handleCheckboxCheck()
-          }
-        }}
+        onKeyDown={handleOnKeyDown}
         tabIndex={0}
         role="checkbox"
         aria-label={`Rate ${ratingValue} of ${maxValue} stars`}
